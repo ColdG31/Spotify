@@ -1,45 +1,38 @@
-// Footer.js
-
-import React, { useEffect } from "react";
-import "./Footer.css";
+import React, { useEffect, useState } from "react";
+import { useStateProviderValue } from "./StateProvider";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import PauseCircleOutlineIcon from '@mui/icons-material/PauseCircleOutline';
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import RepeatIcon from "@mui/icons-material/Repeat";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
+import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
-import Grid from "@mui/material/Grid";
-import Slider from "@mui/material/Slider";
-import { useStateProviderValue } from "./StateProvider";
+import "./Footer.css";
+import { Grid, Slider } from "@mui/material";
 
 function Footer({ spotify }) {
   const [{ token, item, playing }, dispatch] = useStateProviderValue();
+  const [volume, setVolume] = useState(50); // State to store volume level
+  const [debounceTimeout, setDebounceTimeout] = useState(null); // State to manage timeout
 
   useEffect(() => {
-    if (spotify && typeof spotify.getMyCurrentPlaybackState === "function") {
-      // Check if spotify is initialized and the method exists
-      spotify.getMyCurrentPlaybackState().then((r) => {
-        console.log(r);
+    spotify.getMyCurrentPlaybackState().then((r) => {
+      console.log(r);
 
-        dispatch({
-          type: "SET_PLAYING",
-          playing: r.is_playing,
-        });
-
-        dispatch({
-          type: "SET_ITEM",
-          item: r.item,
-        });
-      }).catch(error => {
-        console.error("Error fetching playback state:", error); // Error handling
+      dispatch({
+        type: "SET_PLAYING",
+        playing: r.is_playing,
       });
-    }
-  }, [spotify, dispatch]);
+
+      dispatch({
+        type: "SET_ITEM",
+        item: r.item,
+      });
+    });
+  }, [spotify]);
 
   const handlePlayPause = () => {
-    if (!spotify) return; // Ensure spotify is defined
     if (playing) {
       spotify.pause();
       dispatch({
@@ -56,41 +49,96 @@ function Footer({ spotify }) {
   };
 
   const skipNext = () => {
-    if (!spotify) return; // Ensure spotify is defined
-    spotify.skipToNext();
-    spotify.getMyCurrentPlaybackState().then((r) => {
+    spotify
+      .skipToNext()
+      .then(() => {
+        // Wait for a short delay to ensure Spotify's state is updated
+        setTimeout(() => {
+          spotify
+            .getMyCurrentPlayingTrack()
+            .then((response) => {
+              console.log("Response from getMyCurrentPlayingTrack:", response); // Log the response directly
+  
+              // Update the current track information
+              updateCurrentTrack(response);
+            })
+            .catch((error) => {
+              console.error("Error getting current playing track:", error);
+            });
+        }, 500); // 500ms delay
+      })
+      .catch((error) => {
+        console.error("Error skipping to next track:", error);
+      });
+  };
+  
+  const skipPrevious = () => {
+    spotify
+      .skipToPrevious()
+      .then(() => {
+        // Wait for a short delay to ensure Spotify's state is updated
+        setTimeout(() => {
+          spotify
+            .getMyCurrentPlayingTrack()
+            .then((response) => {
+              console.log("Response from getMyCurrentPlayingTrack:", response); // Log the response directly
+  
+              // Update the current track information
+              updateCurrentTrack(response);
+            })
+            .catch((error) => {
+              console.error("Error getting current playing track:", error);
+            });
+        }, 500); // 500ms delay
+      })
+      .catch((error) => {
+        console.error("Error skipping to previous track:", error);
+      });
+  };
+  
+  // Function to update the track info in the state
+  const updateCurrentTrack = (data) => {
+    if (data && data.item) {
       dispatch({
         type: "SET_ITEM",
-        item: r.item,
+        item: data.item,
       });
       dispatch({
         type: "SET_PLAYING",
-        playing: true,
+        playing: data.is_playing,
       });
-    });
+    } else {
+      console.error("Invalid track data received:", data);
+    }
   };
 
-  const skipPrevious = () => {
-    if (!spotify) return; // Ensure spotify is defined
-    spotify.skipToPrevious();
-    spotify.getMyCurrentPlaybackState().then((r) => {
-      dispatch({
-        type: "SET_ITEM",
-        item: r.item,
-      });
-      dispatch({
-        type: "SET_PLAYING",
-        playing: true,
-      });
-    });
+  const handleVolumeChange = (event, newValue) => {
+    setVolume(newValue);
+  
+    // Clear the previous timeout if it exists
+    if (debounceTimeout) {
+      clearTimeout(debounceTimeout);
+    }
+  
+    // Set a new timeout to call the Spotify API after a delay
+    const timeout = setTimeout(() => {
+      spotify
+        .setVolume(Math.round(newValue)) // Ensure volume is an integer between 0 and 100
+        .catch((error) => {
+          console.error("Error setting volume:", error);
+        });
+    }, 300); // 300 milliseconds debounce time
+  
+    setDebounceTimeout(timeout); // Store the new timeout
   };
+  
 
   return (
     <div className="footer">
       <div className="footer__left">
         <img
           className="footer__albumLogo"
-          src={item?.album.images[0]?.url}
+          src={item?.album.images[0].url}
           alt={item?.name}
         />
         {item ? (
@@ -125,6 +173,7 @@ function Footer({ spotify }) {
         <SkipNextIcon onClick={skipNext} className="footer__icon" />
         <RepeatIcon className="footer__green" />
       </div>
+
       <div className="footer__right">
         <Grid container spacing={2}>
           <Grid item>
@@ -134,7 +183,13 @@ function Footer({ spotify }) {
             <VolumeDownIcon />
           </Grid>
           <Grid item xs>
-            <Slider aria-labelledby="continuous-slider" />
+            <Slider
+              aria-labelledby="continuous-slider"
+              min={0}
+              max={100}
+              value={volume}
+              onChange={handleVolumeChange}
+            />
           </Grid>
         </Grid>
       </div>

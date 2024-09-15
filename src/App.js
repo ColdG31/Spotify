@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import SpotifyWebApi from "spotify-web-api-js";
+import { useStateProviderValue } from "./StateProvider";
+import Player from "./Player";
+import { getTokenFromUrl } from "./spotify";
 import "./App.css";
 import Login from "./Login";
-import { getTokenFromUrl } from "./spotify";
-import SpotifyWebApi from "spotify-web-api-js";
-import Player from "./Player";
-import { useStateProviderValue } from "./StateProvider";
 
 const spotify = new SpotifyWebApi();
 
@@ -50,26 +50,12 @@ function App() {
         });
       });
 
-      // Fetch all playlists with pagination handling
-      const fetchAllPlaylists = async () => {
-        let playlists = [];
-        let limit = 50;
-        let offset = 0;
-        let response;
-
-        do {
-          response = await spotify.getUserPlaylists({ limit, offset });
-          playlists = playlists.concat(response.items);
-          offset += limit;
-        } while (response.next);
-
+      spotify.getUserPlaylists().then((playlists) => {
         dispatch({
           type: "SET_PLAYLISTS",
-          playlists: { items: playlists }, // Flatten all playlists into one array
+          playlists,
         });
-      };
-
-      fetchAllPlaylists();
+      });
     }
   }, [token, dispatch]);
 
