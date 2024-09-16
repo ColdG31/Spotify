@@ -73,3 +73,93 @@
   .body__infoText > p {
     font-size: 14px;
   }
+
+/* Container for the search results */
+.searchResults {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  padding: 0 20px;
+  color: white;
+  width: 100%;
+}
+
+/* Each row of the search result */
+.searchResultRow {
+  display: grid;
+  grid-template-columns: 30px 50px auto auto 50px; /* Adjusted grid to better align text */
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #282828;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  gap: 20px; /* Adds spacing between grid items */
+}
+
+.searchResultRow:hover {
+  background-color: #282828; /* Highlight on hover */
+}
+
+/* Index (number) of the track */
+.searchResultRow p {
+  margin: 0;
+  text-align: center;
+  color: #b3b3b3; /* Adjust the color to match the design */
+}
+
+/* Track cover image */
+.searchResultRow img {
+  height: 40px; /* Adjust size of the album cover */
+  width: 40px;
+  margin-right: 20px;
+  border-radius: 4px; /* Rounded corners */
+}
+
+/* Track and artist names container */
+.searchResultRow div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align items to the top */
+  overflow: hidden; /* Prevent overflow */
+  white-space: nowrap; /* Ensure text stays on a single line */
+  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+  align-items: flex-start; /* Align text to the left */
+}
+
+/* Track name */
+.searchResultRow div p:first-child {
+  margin: 0;
+  color: white; /* White for track names */
+  font-size: 16px;
+  text-align: left; /* Ensure text alignment is left */
+}
+
+/* Artist names */
+.searchResultRow div p:not(:first-child) {
+  margin: 0;
+  color: #b3b3b3; /* Light gray for artist names */
+  font-size: 14px;
+  text-align: left; /* Ensure text alignment is left */
+  overflow: hidden; /* Prevent overflow */
+  white-space: nowrap; /* Ensure text stays on a single line */
+  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+}
+
+/* Album name */
+.searchResultRow .resultAlbum {
+  overflow: hidden; /* Prevent overflow */
+  white-space: nowrap; /* Ensure text stays on a single line */
+  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
+  color: #b3b3b3;
+  font-size: 14px;
+  text-align: left; /* Ensure album name alignment is left */
+}
+
+/* Duration of the song */
+.searchResultRow .resultDuration {
+  width: 50px; /* Adjust width for duration */
+  text-align: right;
+  margin-right: 10px;
+  color: #b3b3b3;
+  font-size: 14px;
+}

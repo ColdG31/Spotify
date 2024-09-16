@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
-import { useStateProviderValue } from "./StateProvider";
 import Player from "./Player";
+import { useStateProviderValue } from "./StateProvider";
 import { getTokenFromUrl } from "./spotify";
 import "./App.css";
 import Login from "./Login";
@@ -10,6 +10,8 @@ const spotify = new SpotifyWebApi();
 
 function App() {
   const [{ token }, dispatch] = useStateProviderValue();
+  const [searchResults, setSearchResults] = useState(null); // Correctly define searchResults state
+  const [isSearching, setIsSearching] = useState(false); // Correctly define isSearching state
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -59,10 +61,29 @@ function App() {
     }
   }, [token, dispatch]);
 
+  const handleSearch = (query) => {
+    if (query) {
+      setIsSearching(true);
+      spotify.search(query, ["track", "artist", "album", "playlist"]).then((results) => {
+        setSearchResults(results);
+      });
+    } else {
+      setIsSearching(false);
+      setSearchResults(null);
+    }
+  };
+
   return (
     <div className="app">
       {!token && <Login />}
-      {token && <Player spotify={spotify} />}
+      {token && (
+        <Player
+          spotify={spotify}
+          handleSearch={handleSearch}
+          searchResults={searchResults}
+          isSearching={isSearching}
+        />
+      )}
     </div>
   );
 }
