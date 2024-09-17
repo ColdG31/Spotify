@@ -74,7 +74,6 @@
     font-size: 14px;
   }
 
-/* Container for the search results */
 .searchResults {
   display: flex;
   flex-direction: column;
@@ -84,82 +83,128 @@
   width: 100%;
 }
 
-/* Each row of the search result */
 .searchResultRow {
   display: grid;
-  grid-template-columns: 30px 50px auto auto 50px; /* Adjusted grid to better align text */
+  grid-template-columns: 30px 50px auto auto 50px;
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #282828;
   cursor: pointer;
   transition: background-color 0.3s;
-  gap: 20px; /* Adds spacing between grid items */
+  gap: 20px;
 }
 
 .searchResultRow:hover {
-  background-color: #282828; /* Highlight on hover */
+  background-color: #282828;
 }
 
-/* Index (number) of the track */
 .searchResultRow p {
   margin: 0;
   text-align: center;
-  color: #b3b3b3; /* Adjust the color to match the design */
+  color: #b3b3b3;
 }
 
-/* Track cover image */
 .searchResultRow img {
-  height: 40px; /* Adjust size of the album cover */
+  height: 40px;
   width: 40px;
   margin-right: 20px;
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 4px;
 }
 
-/* Track and artist names container */
 .searchResultRow div {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align items to the top */
-  overflow: hidden; /* Prevent overflow */
-  white-space: nowrap; /* Ensure text stays on a single line */
-  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
-  align-items: flex-start; /* Align text to the left */
+  justify-content: flex-start;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  align-items: flex-start;
 }
 
-/* Track name */
 .searchResultRow div p:first-child {
   margin: 0;
-  color: white; /* White for track names */
+  color: white;
   font-size: 16px;
-  text-align: left; /* Ensure text alignment is left */
+  text-align: left;
 }
 
-/* Artist names */
 .searchResultRow div p:not(:first-child) {
   margin: 0;
-  color: #b3b3b3; /* Light gray for artist names */
-  font-size: 14px;
-  text-align: left; /* Ensure text alignment is left */
-  overflow: hidden; /* Prevent overflow */
-  white-space: nowrap; /* Ensure text stays on a single line */
-  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
-}
-
-/* Album name */
-.searchResultRow .resultAlbum {
-  overflow: hidden; /* Prevent overflow */
-  white-space: nowrap; /* Ensure text stays on a single line */
-  text-overflow: ellipsis; /* Show ellipsis for overflowing text */
   color: #b3b3b3;
   font-size: 14px;
-  text-align: left; /* Ensure album name alignment is left */
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
-/* Duration of the song */
+.searchResultRow .resultAlbum {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: #b3b3b3;
+  font-size: 14px;
+  text-align: left;
+}
+
 .searchResultRow .resultDuration {
-  width: 50px; /* Adjust width for duration */
+  width: 50px;
   text-align: right;
   margin-right: 10px;
   color: #b3b3b3;
   font-size: 14px;
+}
+
+@media only screen and (max-width: 600px) {
+  .body {
+    padding: 10px;
+    height: auto;
+    max-width: fit-content;
+  }
+
+  .body__info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .body__info > img {
+    height: 50vw;
+    margin: 0 auto 20px;
+  }
+
+  .body__infoText {
+    text-align: center;
+  }
+
+  .body__songs {
+    margin: 10px -10px;
+  }
+
+  .searchResults {
+    width: 100%; /* Full width for mobile */
+    padding: 0 5px; /* Slightly smaller padding for smaller screens */
+  }
+
+  .searchResultRow {
+    flex-direction: row; /* Maintain row direction for better alignment */
+    align-items: center;
+    width: 100%; /* Ensure full width */
+    overflow: hidden;
+  }
+
+  .searchResultRow div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .searchResultRow img {
+    max-width: 40px; /* Smaller images for smaller screens */
+    max-height: 40px;
+  }
+
+  .resultAlbum,
+  .resultDuration {
+    display: none; /* Hide album and duration on very small screens */
+  }
 }

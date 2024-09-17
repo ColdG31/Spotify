@@ -12,9 +12,9 @@ import "./Footer.css";
 import { Grid, Slider } from "@mui/material";
 
 function Footer({ spotify }) {
-  const [{ token, item, playing }, dispatch] = useStateProviderValue();
-  const [volume, setVolume] = useState(50); // State to store volume level
-  const [debounceTimeout, setDebounceTimeout] = useState(null); // State to manage timeout
+  const [{ item, playing }, dispatch] = useStateProviderValue();
+  const [volume, setVolume] = useState(50);
+  const [debounceTimeout, setDebounceTimeout] = useState(null);
 
   useEffect(() => {
     spotify.getMyCurrentPlaybackState().then((r) => {
@@ -30,7 +30,7 @@ function Footer({ spotify }) {
         item: r.item,
       });
     });
-  }, [spotify]);
+  }, [spotify, dispatch]);
 
   const handlePlayPause = () => {
     if (playing) {
@@ -52,51 +52,44 @@ function Footer({ spotify }) {
     spotify
       .skipToNext()
       .then(() => {
-        // Wait for a short delay to ensure Spotify's state is updated
         setTimeout(() => {
           spotify
             .getMyCurrentPlayingTrack()
             .then((response) => {
-              console.log("Response from getMyCurrentPlayingTrack:", response); // Log the response directly
-  
-              // Update the current track information
+              console.log("Response from getMyCurrentPlayingTrack:", response);
               updateCurrentTrack(response);
             })
             .catch((error) => {
               console.error("Error getting current playing track:", error);
             });
-        }, 500); // 500ms delay
+        }, 500);
       })
       .catch((error) => {
         console.error("Error skipping to next track:", error);
       });
   };
-  
+
   const skipPrevious = () => {
     spotify
       .skipToPrevious()
       .then(() => {
-        // Wait for a short delay to ensure Spotify's state is updated
         setTimeout(() => {
           spotify
             .getMyCurrentPlayingTrack()
             .then((response) => {
-              console.log("Response from getMyCurrentPlayingTrack:", response); // Log the response directly
-  
-              // Update the current track information
+              console.log("Response from getMyCurrentPlayingTrack:", response);
               updateCurrentTrack(response);
             })
             .catch((error) => {
               console.error("Error getting current playing track:", error);
             });
-        }, 500); // 500ms delay
+        }, 500);
       })
       .catch((error) => {
         console.error("Error skipping to previous track:", error);
       });
   };
-  
-  // Function to update the track info in the state
+
   const updateCurrentTrack = (data) => {
     if (data && data.item) {
       dispatch({
@@ -114,24 +107,21 @@ function Footer({ spotify }) {
 
   const handleVolumeChange = (event, newValue) => {
     setVolume(newValue);
-  
-    // Clear the previous timeout if it exists
+
     if (debounceTimeout) {
       clearTimeout(debounceTimeout);
     }
-  
-    // Set a new timeout to call the Spotify API after a delay
+
     const timeout = setTimeout(() => {
       spotify
-        .setVolume(Math.round(newValue)) // Ensure volume is an integer between 0 and 100
+        .setVolume(Math.round(newValue))
         .catch((error) => {
           console.error("Error setting volume:", error);
         });
-    }, 300); // 300 milliseconds debounce time
-  
-    setDebounceTimeout(timeout); // Store the new timeout
+    }, 300);
+
+    setDebounceTimeout(timeout);
   };
-  
 
   return (
     <div className="footer">

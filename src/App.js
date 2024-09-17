@@ -10,8 +10,10 @@ const spotify = new SpotifyWebApi();
 
 function App() {
   const [{ token }, dispatch] = useStateProviderValue();
-  const [searchResults, setSearchResults] = useState(null); // Correctly define searchResults state
-  const [isSearching, setIsSearching] = useState(false); // Correctly define isSearching state
+  const [searchResults, setSearchResults] = useState(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [view, setView] = useState("Home");
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -73,6 +75,20 @@ function App() {
     }
   };
 
+  const handleHomeClick = () => {
+    setView("Home");
+    setSelectedPlaylist(null);
+  };
+
+  const handlePlaylistClick = (playlistId) => {
+    spotify.getPlaylist(playlistId).then((response) => {
+      setSelectedPlaylist(response);
+      setIsSearching(false);
+      setSearchResults(null);
+      setView("Playlist");
+    });
+  };
+
   return (
     <div className="app">
       {!token && <Login />}
@@ -82,6 +98,10 @@ function App() {
           handleSearch={handleSearch}
           searchResults={searchResults}
           isSearching={isSearching}
+          handleHomeClick={handleHomeClick}
+          handlePlaylistClick={handlePlaylistClick}
+          selectedPlaylist={selectedPlaylist}
+          view={view}
         />
       )}
     </div>

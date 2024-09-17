@@ -7,3 +7,11 @@
     display: flex;
     flex-grow: 1;
   }
+
+  @media only screen and (max-width: 600px) {
+    .player__body {
+      flex-direction: column;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 1));
+      background-color: rgb(91, 87, 115);
+    }
+  }

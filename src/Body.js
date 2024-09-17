@@ -7,7 +7,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import SongRow from "./SongRow";
 
-function Body({ spotify, handleSearch, searchResults, isSearching }) {
+function Body({ spotify, handleSearch, searchResults, isSearching, selectedPlaylist, view }) {
   const [{ discover_weekly }, dispatch] = useStateProviderValue();
 
   const playPlaylist = (id) => {
@@ -48,18 +48,19 @@ function Body({ spotify, handleSearch, searchResults, isSearching }) {
       });
   };
 
+  const playlist = view === "Home" ? discover_weekly : selectedPlaylist;
+
   return (
     <div className="body">
-      <Header spotify={spotify} handleSearch={handleSearch} />{" "}
-      {/* Pass handleSearch to Header */}
+      <Header spotify={spotify} handleSearch={handleSearch} />
       {!isSearching ? (
         <>
           <div className="body__info">
-            <img src={discover_weekly?.images[0].url} alt="" />
+            <img src={playlist?.images[0].url} alt="" />
             <div className="body__infoText">
               <strong>PLAYLIST</strong>
-              <h2>Discover Weekly</h2>
-              <p>{discover_weekly?.description}</p>
+              <h2>{playlist?.name}</h2>
+              <p>{playlist?.description}</p>
             </div>
           </div>
 
@@ -67,13 +68,13 @@ function Body({ spotify, handleSearch, searchResults, isSearching }) {
             <div className="body__icons">
               <PlayCircleFilledIcon
                 className="body__shuffle"
-                onClick={playPlaylist}
+                onClick={() => playPlaylist(playlist.id)}
               />
               <FavoriteIcon fontSize="large" />
               <MoreHorizIcon />
             </div>
 
-            {discover_weekly?.tracks?.items.map((item) => (
+            {playlist?.tracks?.items.map((item) => (
               <SongRow
                 key={item.track.id}
                 playSong={playSong}
