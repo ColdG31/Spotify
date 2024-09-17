@@ -14,6 +14,7 @@ function App() {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [view, setView] = useState("Home");
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     const hash = getTokenFromUrl();
@@ -89,6 +90,27 @@ function App() {
     });
   };
 
+  const handleFavoritesClick = () => {
+    setView("Favorites");
+    setSelectedPlaylist(null);
+    setIsSearching(false);
+    setSearchResults(null);
+  };
+
+  // Function to add a song to favorites
+  const addToFavorites = (track) => {
+    if (!favorites.find((fav) => fav.id === track.id)) {
+      setFavorites((prevFavorites) => [...prevFavorites, track]);
+    }
+  };
+
+  // Function to remove a song from favorites
+  const removeFromFavorites = (track) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.filter((fav) => fav.id !== track.id)
+    );
+  };
+
   return (
     <div className="app">
       {!token && <Login />}
@@ -100,8 +122,12 @@ function App() {
           isSearching={isSearching}
           handleHomeClick={handleHomeClick}
           handlePlaylistClick={handlePlaylistClick}
+          handleFavoritesClick={handleFavoritesClick} // Pass handleFavoritesClick
           selectedPlaylist={selectedPlaylist}
           view={view}
+          addToFavorites={addToFavorites}
+          removeFromFavorites={removeFromFavorites} // Pass removeFromFavorites
+          favorites={favorites} // Pass favorites state
         />
       )}
     </div>

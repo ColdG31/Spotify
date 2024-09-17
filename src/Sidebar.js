@@ -4,9 +4,10 @@ import SidebarOption from "./SidebarOption";
 import HomeIcon from "@mui/icons-material/Home";
 import SearchIcon from "@mui/icons-material/Search";
 import LibraryMusicIcon from "@mui/icons-material/LibraryMusic";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useStateProviderValue } from "./StateProvider";
 
-function Sidebar({ handleHomeClick, handlePlaylistClick }) {
+function Sidebar({ handleHomeClick, handlePlaylistClick, handleFavoritesClick }) {
   const [{ playlists }] = useStateProviderValue();
 
   return (
@@ -19,6 +20,7 @@ function Sidebar({ handleHomeClick, handlePlaylistClick }) {
       <SidebarOption Icon={HomeIcon} title="Home" onClick={handleHomeClick} />
       <SidebarOption Icon={SearchIcon} title="Search" />
       <SidebarOption Icon={LibraryMusicIcon} title="Your Library" />
+      <SidebarOption Icon={FavoriteIcon} title="Favorites" onClick={handleFavoritesClick} />
       <br />
       <strong className="sidebar__title">PLAYLISTS</strong>
       <hr />

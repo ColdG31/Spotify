@@ -6,6 +6,7 @@ export const initialState = {
   top_artists: null,
   playing: false,
   item: null,
+  view: "Home",
 };
 
 const reducer = (state, action) => {
@@ -63,6 +64,12 @@ const reducer = (state, action) => {
         ...state,
         searchResults: action.searchResults,
       };
+    case "SET_VIEW":
+      return {
+        ...state,
+        view: action.view,
+      };
+
     default:
       return state;
   }
