@@ -1,4 +1,3 @@
-// Header.js
 import React, { useState } from "react";
 import "./Header.css";
 import SearchIcon from "@mui/icons-material/Search";

@@ -35,17 +35,16 @@
 }
 
 .songRow__favoriteIcon {
-  margin-left: auto; /* Push the icon to the right */
+  margin-left: auto;
 }
 
-/* Media query for mobile devices */
 @media only screen and (max-width: 768px) {
   .songRow {
-    flex-direction: row; /* Ensures proper row layout */
-    align-items: center; /* Align items vertically */
+    flex-direction: row;
+    align-items: center;
   }
 
   .songRow__favoriteIcon {
-    margin-left: auto; /* Pushes the icon to the right on mobile */
+    margin-left: auto;
   }
 }

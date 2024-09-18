@@ -4,11 +4,28 @@ import Sidebar from "./Sidebar";
 import Body from "./Body";
 import Footer from "./Footer";
 
-function Player({ spotify, handleSearch, searchResults, isSearching, handleHomeClick, handlePlaylistClick,handleFavoritesClick ,selectedPlaylist, view, addToFavorites, removeFromFavorites, favorites}) {
+function Player({
+  spotify,
+  handleSearch,
+  searchResults,
+  isSearching,
+  handleHomeClick,
+  handlePlaylistClick,
+  handleFavoritesClick,
+  selectedPlaylist,
+  view,
+  addToFavorites,
+  removeFromFavorites,
+  favorites,
+}) {
   return (
     <div className="player">
       <div className="player__body">
-        <Sidebar handleHomeClick={handleHomeClick} handlePlaylistClick={handlePlaylistClick} handleFavoritesClick={handleFavoritesClick} />
+        <Sidebar
+          handleHomeClick={handleHomeClick}
+          handlePlaylistClick={handlePlaylistClick}
+          handleFavoritesClick={handleFavoritesClick}
+        />
         <Body
           spotify={spotify}
           handleSearch={handleSearch}
@@ -16,9 +33,9 @@ function Player({ spotify, handleSearch, searchResults, isSearching, handleHomeC
           isSearching={isSearching}
           selectedPlaylist={selectedPlaylist}
           view={view}
-          addToFavorites={addToFavorites} // Pass it to Body
-          removeFromFavorites={removeFromFavorites} // Pass it to Body
-          favorites={favorites} // Pass favorites state
+          addToFavorites={addToFavorites}
+          removeFromFavorites={removeFromFavorites}
+          favorites={favorites}
         />
       </div>
       <Footer spotify={spotify} />

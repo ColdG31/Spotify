@@ -76,14 +76,14 @@
 }
 
 .searchResultRow {
-  display: grid; /* Keep grid for structured layout */
-  grid-template-columns: 30px 50px 1fr 20fr 20fr 100px; /* Adjusted to better distribute space */
+  display: grid;
+  grid-template-columns: 30px 50px 1fr 20fr 20fr 100px;
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid #282828;
   cursor: pointer;
   transition: background-color 0.3s;
-  gap: 10px; /* Reduced gap for better spacing */
+  gap: 10px;
 }
 
 .searchResultRow:hover {
@@ -97,7 +97,7 @@
 }
 
 .searchResultRow div.details {
-  display: flex; /* Align title and artist info together */
+  display: flex;
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
@@ -144,7 +144,6 @@
   margin-left: auto;
 }
 
-/* Mobile View */
 @media only screen and (max-width: 600px) {
   .body {
     padding: 10px;

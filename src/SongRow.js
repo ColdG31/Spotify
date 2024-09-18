@@ -10,9 +10,9 @@ function SongRow({ track, playSong, isFavorite, toggleFavorite }) {
         className="songRow__album"
         src={track.album.images[0].url}
         alt=""
-        onClick={() => playSong(track.id)}  // Only play the song when the album image is clicked
+        onClick={() => playSong(track.id)}
       />
-      <div className="songRow__info" onClick={() => playSong(track.id)}> {/* Clicking on the song info will also play the song */}
+      <div className="songRow__info" onClick={() => playSong(track.id)}>
         <h1>{track.name}</h1>
         <p>
           {track.artists.map((artist) => artist.name).join(", ")} -{" "}
@@ -22,7 +22,7 @@ function SongRow({ track, playSong, isFavorite, toggleFavorite }) {
       <div
         className="songRow__favorite"
         onClick={(e) => {
-          e.stopPropagation();  // Prevents triggering the playSong function
+          e.stopPropagation();
           toggleFavorite();
         }}
       >

@@ -113,11 +113,9 @@ function Footer({ spotify }) {
     }
 
     const timeout = setTimeout(() => {
-      spotify
-        .setVolume(Math.round(newValue))
-        .catch((error) => {
-          console.error("Error setting volume:", error);
-        });
+      spotify.setVolume(Math.round(newValue)).catch((error) => {
+        console.error("Error setting volume:", error);
+      });
     }, 300);
 
     setDebounceTimeout(timeout);

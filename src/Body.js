@@ -131,7 +131,7 @@ function Body({
                       isFavorite
                         ? removeFromFavorites(item.track)
                         : addToFavorites(item.track)
-                    } // Use toggleFavorite to add or remove
+                    }
                   />
                 );
               })}
@@ -148,9 +148,7 @@ function Body({
                   {isFavorite ? (
                     <FavoriteIcon onClick={() => removeFromFavorites(track)} />
                   ) : (
-                    <FavoriteBorderIcon
-                      onClick={() => addToFavorites(track)}
-                    />
+                    <FavoriteBorderIcon onClick={() => addToFavorites(track)} />
                   )}
                 </span>
                 <p>{index + 1}</p>

@@ -67,9 +67,11 @@ function App() {
   const handleSearch = (query) => {
     if (query) {
       setIsSearching(true);
-      spotify.search(query, ["track", "artist", "album", "playlist"]).then((results) => {
-        setSearchResults(results);
-      });
+      spotify
+        .search(query, ["track", "artist", "album", "playlist"])
+        .then((results) => {
+          setSearchResults(results);
+        });
     } else {
       setIsSearching(false);
       setSearchResults(null);
@@ -77,34 +79,34 @@ function App() {
   };
 
   const handleHomeClick = () => {
+    setIsSearching(false);
+    setSearchResults(null);
     setView("Home");
     setSelectedPlaylist(null);
   };
 
   const handlePlaylistClick = (playlistId) => {
+    setIsSearching(false);
+    setSearchResults(null);
     spotify.getPlaylist(playlistId).then((response) => {
       setSelectedPlaylist(response);
-      setIsSearching(false);
-      setSearchResults(null);
       setView("Playlist");
     });
   };
 
   const handleFavoritesClick = () => {
-    setView("Favorites");
-    setSelectedPlaylist(null);
     setIsSearching(false);
     setSearchResults(null);
+    setView("Favorites");
+    setSelectedPlaylist(null);
   };
 
-  // Function to add a song to favorites
   const addToFavorites = (track) => {
     if (!favorites.find((fav) => fav.id === track.id)) {
       setFavorites((prevFavorites) => [...prevFavorites, track]);
     }
   };
 
-  // Function to remove a song from favorites
   const removeFromFavorites = (track) => {
     setFavorites((prevFavorites) =>
       prevFavorites.filter((fav) => fav.id !== track.id)
@@ -122,12 +124,12 @@ function App() {
           isSearching={isSearching}
           handleHomeClick={handleHomeClick}
           handlePlaylistClick={handlePlaylistClick}
-          handleFavoritesClick={handleFavoritesClick} // Pass handleFavoritesClick
+          handleFavoritesClick={handleFavoritesClick}
           selectedPlaylist={selectedPlaylist}
           view={view}
           addToFavorites={addToFavorites}
-          removeFromFavorites={removeFromFavorites} // Pass removeFromFavorites
-          favorites={favorites} // Pass favorites state
+          removeFromFavorites={removeFromFavorites}
+          favorites={favorites}
         />
       )}
     </div>
